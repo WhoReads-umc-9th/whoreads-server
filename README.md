@@ -57,15 +57,22 @@ src/main/java/com/whoreads/
     ├── s3/              # 이미지 업로드 관련
     └── fcm/             # 푸시 알림 서버 연동
 ```
----
 
+---
+## 📖 Project Documentation
+프로젝트 운영 및 상세 명세는 아래 문서를 참고하세요.
+
+- [🤝 협업 가이드 (Collaboration Rules)](./COLLABORATION.md)
+- [📝 API 명세서 (API Specification)](./API_SPEC.md)
+
+---
 ## 👥 Team Members
 
 | Profile | Name | Role | Contributions | GitHub |
 | :---: | :--- | :--- | :--- | :---: |
-| <img src="https://github.com/seoyeoki.png" width="100"> | **냠냠** | **Backend Lead** / PM | • 프로젝트 아키텍처 설계<br>• 독서 DNA 매칭 알고리즘 구현<br>• 데이터 소스 정제 및 관리 | [@member1](https://github.com/member2) |
+| <img src="https://github.com/seoyeoki.png" width="100"> | **냠냠** | **Backend** | • 프로젝트 아키텍처 설계<br>• 독서 DNA 매칭 알고리즘 구현<br>• 데이터 소스 정제 및 관리 | [@member1](https://github.com/member2) |
 | <img src="https://github.com/member2.png" width="100"> | **팀원 2** | **Backend** | • 인물 중심 가상 서재 API<br>• 4-Step 상태 관리 및 Drop It 로직<br>• DB 스키마 설계 | [@member2](https://github.com/member2) |
-| <img src="https://github.com/member3.png" width="100"> | **팀원 3** | **Frontend / Web** | • 유명인 인용 기반 스와이프 UI<br>• 개인 서재 대시보드 시각화<br>• 웹 앱 반응형 인터페이스 구현 | [@member3](https://github.com/member3) |
+| <img src="https://github.com/member3.png" width="100"> | **팀원 3** | **Backend** | • 유명인 인용 기반 스와이프 UI<br>• 개인 서재 대시보드 시각화<br>• 웹 앱 반응형 인터페이스 구현 | [@member3](https://github.com/member3) |
 | <img src="https://github.com/member4.png" width="100"> | **김서연** | **Backend / Infra** | • 관계 기반 스낵 알림 시스템<br>• 팩트체크 딥링크 연동 모듈<br>• 서버 인프라 구축(AWS) 및 CI/CD 파이프라인 구축 | [@seoyeoki](https://github.com/seoyeoki) |
 
 - **김서연**: 깃허브/배포 관리
