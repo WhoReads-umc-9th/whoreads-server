@@ -60,10 +60,13 @@ src/main/java/com/whoreads/
 
 ---
 ## 📖 Project Documentation
-프로젝트 운영 및 상세 명세는 아래 문서를 참고하세요.
+프로젝트 운영 및 기술 관련 상세 정보는 아래 문서를 참고하세요.
 
-- [🤝 협업 가이드 (Collaboration Rules)](./COLLABORATION.md)
-- [📝 API 명세서 (API Specification)](./API_SPEC.md)
+| 문서명 | 주요 내용 | 바로가기 |
+| :--- | :--- | :---: |
+| **🤝 Collaboration Rules** | 브랜치 전략, 커밋 컨벤션, PR 규칙 | [바로가기](./COLLABORATION.md) |
+| **📝 API Specification** | 도메인별 API 엔드포인트 및 응답 구조 | [바로가기](./API_SPEC.md) |
+| **🔍 Troubleshooting** | 개발 중 발생한 이슈 및 해결 방법 기록 | [바로가기](./TROUBLESHOOTING.md) |
 
 ---
 ## 👥 Team Members
