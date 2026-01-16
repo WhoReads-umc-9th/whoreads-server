@@ -33,4 +33,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: Update ERD.md due to schema change"
-          file_pattern: 'ERD.md'  # 변경된 ERD.md 파일만 커밋
+          file_pattern: 'docs/ERD/ERD.md'  # 변경된 ERD.md 파일만 커밋
