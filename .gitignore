@@ -60,4 +60,5 @@ help/
 HELP.md
 
 ### Claude ###
-claude.md
+docs/claude.md
+docs/DOCKER_STUDY.md
