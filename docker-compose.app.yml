@@ -9,17 +9,34 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Seoul
-    command: # 한글 깨짐 방지
+    command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
-      # 1. 데이터 저장소 (로컬에 저장해서 껐다 켜도 데이터 유지)
       - ./db/data:/var/lib/mysql
-      # 2. [핵심] 초기화 스크립트 자동 실행 폴더 연결
       - ./db/initdb:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: whoreads-app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: whoreads
+      USER_NAME: tiger
+      USER_PASSWORD: tiger1234!
+      TZ: Asia/Seoul
+    depends_on:
+      db:
+        condition: service_healthy
     restart: always
