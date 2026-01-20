@@ -6,6 +6,8 @@
 | 일자 | 제목 | 관련 도메인 | 작성자 |
 | :--- | :--- | :--- | :--- |
 | 26-01-20 | [Docker] Spring Boot 컨테이너화 시 설정 충돌 | Infra | 김서연 |
+| 26-01-20 | [Docker] 환경변수 주입 및 Spring Profile 동적 할당 | Infra | 김서연 |
+| 26-01-20 | [Docker] docker-compose 환경변수 위치 오류 | Infra | 김서연 |
 
 ---
 
@@ -64,3 +66,58 @@ FROM eclipse-temurin:17-jre
 FROM eclipse-temurin:21-jdk AS builder
 FROM eclipse-temurin:21-jre
 ```
+
+### [Issue #05] Docker 환경변수 주입 및 Spring Profile 동적 할당
+- **현상**: Docker Compose를 통해 Spring Boot 애플리케이션 실행 시 DataSource 설정 누락으로 컨테이너 시작 실패
+  ```text
+  Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+  Reason: Failed to determine a suitable driver class
+  ```
+- **원인**:
+  1. `application.yml`에 `profiles.include: local`이 하드코딩되어 있어 Docker 환경에서 프로필 동적 변경 불가
+  2. Docker Compose의 `env_file`만으로는 Spring Boot가 환경변수를 인식하지 못함
+- **해결**:
+  1. `application.yml`에서 `profiles.include: local` 제거
+  2. `docker-compose.app.yml`에 환경변수 명시적 추가
+  ```yaml
+  environment:
+    SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    DB_HOST: ${DB_HOST}
+    DB_PORT: ${DB_PORT}
+    DB_NAME: ${DB_NAME}
+    USER_NAME: ${USER_NAME}
+    USER_PASSWORD: ${USER_PASSWORD}
+  ```
+  3. `.env` 파일에 `SPRING_PROFILES_ACTIVE=local` (로컬) 또는 `SPRING_PROFILES_ACTIVE=prod` (운영) 설정
+
+### [Issue #06] docker-compose 환경변수 위치 오류
+- **현상**: `SPRING_PROFILES_ACTIVE` 환경변수가 무시되고 default 프로필로 실행됨
+  ```text
+  No active profile set, falling back to 1 default profile: "default"
+  Failed to configure a DataSource: 'url' attribute is not specified...
+  ```
+- **원인**: `docker-compose.app.yml`에서 `env_file`과 `environment` 블록이 `app` 서비스가 아닌 `nginx` 서비스에 잘못 위치
+  ```yaml
+  # 잘못된 구조
+  services:
+    app:
+      ...
+    nginx:
+      ...
+      env_file:      # ← nginx에 붙어있음!
+      environment:   # ← nginx에 붙어있음!
+  ```
+- **해결**: 환경변수 블록을 `app` 서비스로 이동
+  ```yaml
+  services:
+    app:
+      ...
+      env_file:
+        - .env
+      environment:
+        SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+        DB_HOST: ${DB_HOST}
+        ...
+    nginx:
+      ...
+  ```
