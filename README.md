@@ -73,14 +73,11 @@ src/main/java/com/whoreads/
 ---
 ## 👥 Team Members
 
-| Profile | Name | Role | Contributions | GitHub |
+| Profile | Name | Role | Domain | GitHub |
 | :---: | :--- | :--- | :--- | :---: |
-| <img src="https://github.com/seoyeoki.png" width="100"> | **냠냠** | **Backend** | • 프로젝트 아키텍처 설계<br>• 독서 DNA 매칭 알고리즘 구현<br>• 데이터 소스 정제 및 관리 | [@member1](https://github.com/member2) |
-| <img src="https://github.com/member2.png" width="100"> | **팀원 2** | **Backend** | • 인물 중심 가상 서재 API<br>• 4-Step 상태 관리 및 Drop It 로직<br>• DB 스키마 설계 | [@member2](https://github.com/member2) |
-| <img src="https://github.com/member3.png" width="100"> | **팀원 3** | **Backend** | • 유명인 인용 기반 스와이프 UI<br>• 개인 서재 대시보드 시각화<br>• 웹 앱 반응형 인터페이스 구현 | [@member3](https://github.com/member3) |
-| <img src="https://github.com/member4.png" width="100"> | **김서연** | **Backend / Infra** | • 관계 기반 스낵 알림 시스템<br>• 팩트체크 딥링크 연동 모듈<br>• 서버 인프라 구축(AWS) 및 CI/CD 파이프라인 구축 | [@seoyeoki](https://github.com/seoyeoki) |
-
-- **김서연**: 깃허브/배포 관리
-- **주요 기능 구현**: 어쩌구...(예시)
+| <img src="https://github.com/7004hsh.png" width="100"> | **현/허성현** | 데이터 관리 | 책, 유명인 | [@7004hsh](https://github.com/7004hsh) |
+| <img src="https://github.com/0000yuyu.png" width="100"> | **로이/송유진** | 데이터 관리 | 인용 | [@0000yuyu](https://github.com/0000yuyu) |
+| <img src="https://github.com/JUYun9.png" width="100"> | **우디/윤정우** | ERD 및 API | 사용자 및 로그인, 독서 DNA | [@JUYun9](https://github.com/JUYun9) |
+| <img src="https://github.com/seoyeoki.png" width="100"> | **쏘이/김서연** | 깃헙 관리 및 배포 | 독서 세션, 집중 모드 | [@seoyeoki](https://github.com/seoyeoki) |
 
 ---
