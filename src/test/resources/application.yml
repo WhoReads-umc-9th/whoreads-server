@@ -1,13 +1,23 @@
+# src/test/resources/application.yml
+
 spring:
+  # [핵심] 테스트 돌릴 땐 active profile 같은 거 무시해! 라고 덮어쓰는 효과
+  profiles:
+    active: test
+
+  # H2 DB 사용 (필수)
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MySQL
     driver-class-name: org.h2.Driver
     username: sa
     password:
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-    database-platform: org.hibernate.dialect.H2Dialect
+
+# 에러 났던 키값들 가짜로 채우기
+jwt:
+  secret: "test-secret-key-1234567890" # 아무거나
+
+cloud:
+  aws:
+    credentials:
+      access-key: "test"
+      secret-key: "test"
