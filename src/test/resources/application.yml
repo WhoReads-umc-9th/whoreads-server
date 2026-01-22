@@ -1,0 +1,61 @@
+# src/test/resources/application.yml
+# CI 환경에서 테스트 실행을 위한 설정 (실제 기능 X, Context 로드만 목표)
+
+spring:
+  profiles:
+    active: test
+
+  # H2 In-memory DB
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  # JPA
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: false
+
+  # Jackson
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    time-zone: Asia/Seoul
+
+# Aladin API (더미)
+aladin:
+  api:
+    key: "test-aladin-api-key"
+    url: "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx"
+
+# JWT (더미)
+jwt:
+  secret: "test-jwt-secret-key-must-be-at-least-256-bits-long-for-hs256-algorithm-1234567890"
+  access-token-validity: 3600000
+  refresh-token-validity: 604800000
+
+# AWS (더미)
+cloud:
+  aws:
+    credentials:
+      access-key: "test-access-key"
+      secret-key: "test-secret-key"
+    s3:
+      bucket: "test-bucket"
+    region:
+      static: ap-northeast-2
+
+# Server
+server:
+  port: 8080
+
+# Logging (테스트 시 최소화)
+logging:
+  level:
+    root: WARN
+    whoreads.backend: INFO
