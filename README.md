@@ -81,3 +81,4 @@ src/main/java/com/whoreads/
 | <img src="https://github.com/seoyeoki.png" width="100"> | **쏘이/김서연** | 깃헙 관리 및 배포 | 독서 세션, 집중 모드 | [@seoyeoki](https://github.com/seoyeoki) |
 
 ---
+
