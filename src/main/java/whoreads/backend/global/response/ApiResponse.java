@@ -1,6 +1,7 @@
 package whoreads.backend.global.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,9 +12,16 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
 
-    private final boolean isSuccess;
+    @JsonProperty("isSuccess")
+    private final Boolean isSuccess;
+
+    @JsonProperty("code")
     private final int code;
+
+    @JsonProperty("message")
     private final String message;
+
+    @JsonProperty("result")
     private final T result;
 
     public static <T> ApiResponse<T> success(T result) {
