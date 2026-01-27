@@ -23,7 +23,7 @@ public class CelebrityController {
                 .id(id)
                 .name("페이커")
                 .shortBio("LoL 프로게이머")
-                .tags("운동선수")
+                .tags(List.of("운동선수"))
                 .imageUrl("https://example.com/faker.jpg")
                 .build();
     }

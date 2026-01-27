@@ -5,6 +5,9 @@ import lombok.Getter;
 import whoreads.backend.domain.celebrity.entity.Celebrity;
 import whoreads.backend.domain.celebrity.entity.CelebrityTag;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @Builder
 public class CelebrityResponse {
@@ -12,7 +15,7 @@ public class CelebrityResponse {
     private String name;
     private String imageUrl;
     private String shortBio;
-    private String tags; // enum -> string
+    private List<String> tags; // "SINGER", "ACTOR" 처럼 배열로 받음
 
     public static CelebrityResponse from(Celebrity celebrity) {
         return CelebrityResponse.builder()
@@ -20,7 +23,11 @@ public class CelebrityResponse {
                 .name(celebrity.getName())
                 .imageUrl(celebrity.getImageUrl())
                 .shortBio(celebrity.getShortBio())
-                .tags(celebrity.getTags().getDescription()) // 한글명 반환(ex : 작가, 아티스트)
+                .tags(
+                        celebrity.getTags().stream()        // 1. 리스트를 펼쳐서
+                                .map(CelebrityTag::getDescription)       // 2. 각각의 한글 설명만 뽑고
+                                .collect(Collectors.toList())   // 3. 다시 리스트로 묶기
+                )
                 .build();
     }
 }
