@@ -145,7 +145,7 @@ jobs:
             # 컨테이너 내부에서 헬스체크 (curl이 없을 경우 wget 시도)
             HEALTH=$(docker exec "whoreads-staging-$NEW" sh -c 'curl -sf http://localhost:8080/api/health 2>/dev/null || wget -qO- http://localhost:8080/api/health 2>/dev/null' || echo "failed")
 
-            if echo "$HEALTH" | grep -q "ok"; then
+            if echo "$HEALTH" | grep -q "UP"; then
               echo "Health check passed!"
 
               # ========================================
