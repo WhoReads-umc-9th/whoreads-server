@@ -2,9 +2,10 @@ package whoreads.backend.domain.notification.service;
 
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import whoreads.backend.global.exception.CustomException;
+import whoreads.backend.global.exception.ErrorCode;
+
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class NotificationPushServiceImpl implements NotificationPushService {
         try {
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
-            //추후 구현
+            throw new CustomException(ErrorCode.FCM_SEND_FAILED);
         }
     }
 
