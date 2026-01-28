@@ -2,12 +2,12 @@ package whoreads.backend.domain.notification.service;
 
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class NotificationPushServiceImpl implements NotificationPushService {
 
     private final FirebaseMessaging firebaseMessaging;
