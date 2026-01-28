@@ -1,11 +1,6 @@
 spring:
   application:
     name: whoreads
-  datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
-    username: ${USER_NAME}
-    password: ${USER_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
   # JPA (공통 설정)
   jpa:
     hibernate:
@@ -29,7 +24,7 @@ aladin:
 
 # Server
 server:
-  port: 9090
+  port: 8080
 
 # Logging
 logging:
