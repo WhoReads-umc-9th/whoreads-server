@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import whoreads.backend.global.exception.CustomException;
+import whoreads.backend.global.exception.ErrorCode;
 
 import java.io.IOException;
 
@@ -16,21 +18,21 @@ import java.io.IOException;
 @Configuration
 public class FirebaseConfig {
     @Value("${firebase.secret.path}")
-    private String SERVICE_ACCOUNT_PATH;
+    private String serviceAccountPath;
 
     @Bean
     public FirebaseApp firebaseApp() {
         try {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(
-                            GoogleCredentials.fromStream(new ClassPathResource(SERVICE_ACCOUNT_PATH).getInputStream())
+                            GoogleCredentials.fromStream(new ClassPathResource(serviceAccountPath).getInputStream())
                     )
                     .build();
 
             return FirebaseApp.initializeApp(options);
 
         } catch (IOException exception) {
-            return null;
+            throw new CustomException(ErrorCode.FCM_SERVER_UNAVAILABLE);
         }
     }
 
