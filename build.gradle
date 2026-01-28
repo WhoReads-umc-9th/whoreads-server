@@ -48,6 +48,9 @@ dependencies {
 
     // Test DB
     runtimeOnly 'com.h2database:h2'
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
 }
 
 tasks.named('test') {

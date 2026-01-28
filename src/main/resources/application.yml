@@ -55,3 +55,7 @@ jwt:
 
   # 기본값(604800000 = 7일)
   refresh-token-validity: ${JWT_REFRESH_EXP:604800000}
+
+firebase:
+  secret:
+    path: "firebase/secret-key.json"
