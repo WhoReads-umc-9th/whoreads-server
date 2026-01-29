@@ -77,9 +77,15 @@ sudo certbot certonly --webroot \
 /etc/letsencrypt/             # 인증서 저장 경로 (시스템)
 ```
 
-### default.conf (HTTPS 적용)
+### default.conf (Blue-Green 배포 + Staging/Prod 분리)
+
+> 💡 CD 스크립트가 `sed`로 `whoreads-prod-blue` ↔ `whoreads-prod-green`을 치환합니다.
 
 ```nginx
+# ==============================================
+# 1. Production (api.whoreads.kro.kr) - HTTPS
+# ==============================================
+
 # HTTP → HTTPS 리다이렉트
 server {
     listen 80;
@@ -96,7 +102,7 @@ server {
     }
 }
 
-# HTTPS 서버
+# HTTPS 서버 (Production)
 server {
     listen 443 ssl;
     server_name api.whoreads.kro.kr;
@@ -105,14 +111,15 @@ server {
     ssl_certificate /etc/letsencrypt/live/api.whoreads.kro.kr/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/api.whoreads.kro.kr/privkey.pem;
 
-    # SSL 설정 (권장)
+    # SSL 설정
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;
     ssl_prefer_server_ciphers off;
     ssl_session_cache shared:SSL:10m;
     ssl_session_timeout 1d;
 
-    # Proxy to Spring Boot (Blue/Green)
+    # Proxy to Production (Blue/Green)
+    # ✅ CD 스크립트가 sed로 blue ↔ green 치환
     location / {
         proxy_pass http://whoreads-prod-blue:8080;
         proxy_set_header Host $host;
@@ -121,7 +128,33 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
+
+# ==============================================
+# 2. Staging (EC2 IP 직접 접근) - HTTP
+# ==============================================
+
+server {
+    listen 80 default_server;
+    server_name _;  # IP 직접 접근 등 나머지 모든 요청
+
+    # Proxy to Staging (Blue/Green)
+    # ✅ CD 스크립트가 sed로 blue ↔ green 치환
+    location / {
+        proxy_pass http://whoreads-staging-blue:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
 ```
+
+### 접근 경로 정리
+
+| 접근 방식 | 환경 | 컨테이너 |
+|-----------|------|----------|
+| `https://api.whoreads.kro.kr` | Production | `whoreads-prod-blue/green` |
+| `http://<EC2-IP>` | Staging | `whoreads-staging-blue/green` |
 
 ## 4. Nginx 컨테이너 재실행 (인증서 볼륨 마운트)
 
