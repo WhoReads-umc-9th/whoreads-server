@@ -153,21 +153,55 @@ jobs:
               # ========================================
               echo "=== Step 6: Update Nginx Configuration ==="
 
-              # Host의 Nginx 설정 파일 수정
-              if [ -f "$NGINX_CONF" ]; then
-                sed -i "s/whoreads-prod-\(blue\|green\)/whoreads-prod-$NEW/g" "$NGINX_CONF"
-                echo "Updated nginx config to point to: whoreads-prod-$NEW"
-              else
-                echo "Warning: Nginx config not found at $NGINX_CONF"
+              # 6-1. Nginx 설정 파일 존재 확인 (필수)
+              if [ ! -f "$NGINX_CONF" ]; then
+                echo "ERROR: Nginx config not found at $NGINX_CONF"
+                echo "Please ensure Nginx is properly set up on the server."
+                docker stop "whoreads-prod-$NEW" 2>/dev/null || true
+                docker rm "whoreads-prod-$NEW" 2>/dev/null || true
+                exit 1
               fi
 
-              # Nginx 컨테이너 리로드
-              if docker ps --filter "name=$NGINX_CONTAINER" --format "{{.Names}}" | grep -q "$NGINX_CONTAINER"; then
-                docker exec "$NGINX_CONTAINER" nginx -s reload
-                echo "Nginx reloaded successfully"
+              # 6-2. 현재 설정 백업 및 변경
+              cp "$NGINX_CONF" "$NGINX_CONF.bak"
+              sed -i "s/whoreads-prod-\(blue\|green\)/whoreads-prod-$NEW/g" "$NGINX_CONF"
+
+              # 6-3. 변경 확인
+              if grep -q "whoreads-prod-$NEW" "$NGINX_CONF"; then
+                echo "Nginx config updated to point to: whoreads-prod-$NEW"
               else
-                echo "Warning: Nginx container '$NGINX_CONTAINER' not found or not running"
+                echo "ERROR: Failed to update Nginx config. Restoring backup..."
+                cp "$NGINX_CONF.bak" "$NGINX_CONF"
+                docker stop "whoreads-prod-$NEW" 2>/dev/null || true
+                docker rm "whoreads-prod-$NEW" 2>/dev/null || true
+                exit 1
               fi
+
+              # 6-4. Nginx 컨테이너 확인 (필수)
+              if ! docker ps --filter "name=$NGINX_CONTAINER" --format "{{.Names}}" | grep -q "$NGINX_CONTAINER"; then
+                echo "ERROR: Nginx container '$NGINX_CONTAINER' not found or not running"
+                echo "Restoring backup..."
+                cp "$NGINX_CONF.bak" "$NGINX_CONF"
+                docker stop "whoreads-prod-$NEW" 2>/dev/null || true
+                docker rm "whoreads-prod-$NEW" 2>/dev/null || true
+                exit 1
+              fi
+
+              # 6-5. Nginx 설정 검증
+              if ! docker exec "$NGINX_CONTAINER" nginx -t 2>&1; then
+                echo "ERROR: Nginx config validation failed. Restoring backup..."
+                cp "$NGINX_CONF.bak" "$NGINX_CONF"
+                docker stop "whoreads-prod-$NEW" 2>/dev/null || true
+                docker rm "whoreads-prod-$NEW" 2>/dev/null || true
+                exit 1
+              fi
+
+              # 6-6. Nginx 리로드
+              docker exec "$NGINX_CONTAINER" nginx -s reload
+              echo "Nginx reloaded successfully"
+
+              # 백업 파일 정리
+              rm -f "$NGINX_CONF.bak"
 
               # ========================================
               # 7. 이전 컨테이너 정리
