@@ -1,7 +1,6 @@
 spring:
   application:
     name: whoreads
-
   # JPA (공통 설정)
   jpa:
     hibernate:
@@ -55,3 +54,7 @@ jwt:
 
   # 기본값(604800000 = 7일)
   refresh-token-validity: ${JWT_REFRESH_EXP:604800000}
+
+firebase:
+  secret:
+    path: ${FIREBASE_SECRET_PATH:firebase/secret-key.json}
