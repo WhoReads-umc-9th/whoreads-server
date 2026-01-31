@@ -42,3 +42,19 @@ jobs:
         run: ./gradlew test
         env:
           FIREBASE_SECRET_PATH: firebase/secret-key.json
+
+          # [2] JWT 시크릿 (가장 중요! Base64로 인코딩된 더미 키여야 함)
+          # 아래 값은 "test-key-must-be-long-enough-for-security-policy"를 Base64로 인코딩한 값입니다.
+          JWT_SECRET: dGVzdC1rZXktbXVzdC1iZS1sb25nLWVub3VnaC1mb3Itc2VjdXJpdHktcG9saWN5
+
+          # [3] 나머지 필수 환경변수 (테스트용 더미 값 주입)
+          ALADIN_KEY: dummy_aladin_key
+          MAIL_ID: test@naver.com
+          MAIL_PASSWORD: dummy_password
+
+          # [4] DB 설정 (테스트에서 H2를 쓰거나 Mocking을 했다면 이 값들은 무시되지만, 에러 방지용으로 채워둠)
+          DB_HOST: localhost
+          DB_PORT: 3306
+          DB_NAME: testdb
+          DB_USERNAME: root
+          DB_PASSWORD: password
