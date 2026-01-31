@@ -72,7 +72,7 @@ jobs:
           DB_PASSWORD: password
 
           # [2] 스프링 표준 변수 (DB 연결 강제용)
-          SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&rewriteBatchedStatements=true
+          SPRING_DATASOURCE_URL: "jdbc:mysql://127.0.0.1:3306/testdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&rewriteBatchedStatements=true"
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: password
           SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
