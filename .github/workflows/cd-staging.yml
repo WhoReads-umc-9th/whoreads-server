@@ -94,11 +94,20 @@ jobs:
               mkdir -p "$DEPLOY_DIR/nginx/conf.d"
             fi
 
-            # Nginx 설정 파일이 없으면 템플릿에서 생성
+            # Nginx 설정: 템플릿이 변경되었으면 복사
             NGINX_TEMPLATE="$DEPLOY_DIR/nginx/default.conf.template"
-            if [ ! -f "$NGINX_CONF" ] && [ -f "$NGINX_TEMPLATE" ]; then
-              echo "Creating nginx config from template..."
-              cp "$NGINX_TEMPLATE" "$NGINX_CONF"
+            TEMPLATE_HASH_FILE="$DEPLOY_DIR/nginx/.template_hash"
+            if [ -f "$NGINX_TEMPLATE" ]; then
+              NEW_HASH=$(md5sum "$NGINX_TEMPLATE" | cut -d' ' -f1)
+              OLD_HASH=""
+              if [ -f "$TEMPLATE_HASH_FILE" ]; then
+                OLD_HASH=$(cat "$TEMPLATE_HASH_FILE")
+              fi
+              if [ ! -f "$NGINX_CONF" ] || [ "$NEW_HASH" != "$OLD_HASH" ]; then
+                echo "Updating nginx config from template..."
+                cp "$NGINX_TEMPLATE" "$NGINX_CONF"
+                echo "$NEW_HASH" > "$TEMPLATE_HASH_FILE"
+              fi
             fi
 
             # Docker 네트워크 생성 (없으면)
