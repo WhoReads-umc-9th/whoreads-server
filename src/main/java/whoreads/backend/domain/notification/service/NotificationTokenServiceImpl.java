@@ -47,7 +47,7 @@ public class NotificationTokenServiceImpl implements NotificationTokenService {
     * 매일 2시 30일 지난 토큰 정리
     * */
     @Scheduled(cron = "0 0 2 * * *")
-    @jakarta.transaction.Transactional
+    @Transactional
     public void deleteInactiveUsers() {
         LocalDateTime threshold = LocalDateTime.now().minusDays(30);
         memberRepository.clearExpiredTokens(threshold);
