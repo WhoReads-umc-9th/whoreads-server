@@ -1,4 +1,13 @@
 ---
+name: Fix
+about: 오류 수정 템플릿
+title: "[Fix]"
+labels: ''
+assignees: ''
+
+---
+
+---
 name: "✅ Bug Fix Task"
 about: 확인된 버그를 수정하기 위한 작업 계획입니다.
 title: "[FIX] "
