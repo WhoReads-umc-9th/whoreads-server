@@ -3,8 +3,12 @@ package whoreads.backend.domain.notification.service;
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import whoreads.backend.domain.member.repository.MemberRepository;
+import whoreads.backend.domain.notification.dto.FcmMessageDTO;
 import whoreads.backend.global.exception.CustomException;
 import whoreads.backend.global.exception.ErrorCode;
+
+import java.util.Optional;
 
 
 @Service
@@ -12,31 +16,49 @@ import whoreads.backend.global.exception.ErrorCode;
 public class NotificationPushServiceImpl implements NotificationPushService {
 
     private final FirebaseMessaging firebaseMessaging;
+    private final MemberRepository memberRepository;
 
-    public void sendNotification(String title, String body, String fcmToken,String link) {
-        send(createMessage(title, body, fcmToken,link));
+    public void sendNotification(String fcmToken, FcmMessageDTO dto) {
+        send(createMessage(fcmToken,dto),fcmToken);
     }
 
-    private void send(Message message) {
+    private void send(Message message,String fcmToken) {
         try {
             firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e) {
+            MessagingErrorCode errorCode =  e.getMessagingErrorCode();
+
+            //유효하지 않은 토큰인 경우 즉시 삭제
+            if (errorCode == MessagingErrorCode.UNREGISTERED ||
+                errorCode == MessagingErrorCode.INVALID_ARGUMENT) {
+                memberRepository.clearToken(fcmToken);
+                throw new CustomException(ErrorCode.FCM_TOKEN_UNREGISTERED);
+            }
+            // 그 외의 에러 예외 처리
             throw new CustomException(ErrorCode.FCM_SEND_FAILED);
         }
     }
 
-    private Message createMessage(String title, String body, String fcmToken,String link) {
+    private Message createMessage(String fcmToken, FcmMessageDTO dto) {
         return Message.builder()
-                .setNotification(Notification.builder()
-                        .setTitle(title)
-                        .setBody(body)
-                        .build())
-                .setWebpushConfig(WebpushConfig.builder()
-                        .setFcmOptions(WebpushFcmOptions.withLink(link))
-                        .build())
-                .putData("title", title)
-                .putData("body", body)
                 .setToken(fcmToken)
+                // 알림 설정 ( 포그라운드 노출용 )
+                .setNotification(Notification.builder()
+                        .setTitle(dto.getTitle())
+                        .setBody(dto.getBody())
+                        .build())
+                // ios 전용 설정 ( 알림 클릭 시 동작 및 소리 )
+                .setApnsConfig(ApnsConfig.builder()
+                        .setAps(Aps.builder()
+                                .setCategory("CLICK_ACTION")
+                                .setSound("default")
+                                .build())
+                        .build())
+                // 커스텀 데이터 ( 프론트 확인용 )
+                .putData("title", dto.getTitle())
+                .putData("body", dto.getBody())
+                .putData("type",dto.getType())
+                .putData("link", Optional.ofNullable(dto.getLink()).orElse(""))
                 .build();
     }
 }

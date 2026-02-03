@@ -1,7 +1,9 @@
 package whoreads.backend.domain.notification.service;
 
 
+import whoreads.backend.domain.notification.dto.FcmMessageDTO;
+
 public interface NotificationPushService {
 
-    void sendNotification(String title, String body, String fcmToken,String link);
+   void sendNotification(String fcmToken, FcmMessageDTO dto);
 }
