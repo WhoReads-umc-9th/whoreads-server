@@ -1,14 +1,14 @@
-package whoreads.backend.domain.userbook.controller;
+package whoreads.backend.domain.library.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import whoreads.backend.domain.userbook.controller.docs.UserBookControllerDocs;
-import whoreads.backend.domain.userbook.dto.UserBookRequest;
-import whoreads.backend.domain.userbook.dto.UserBookResponse;
-import whoreads.backend.domain.userbook.enums.ReadingStatus;
-import whoreads.backend.domain.userbook.service.UserBookService;
+import whoreads.backend.domain.library.controller.docs.UserBookControllerDocs;
+import whoreads.backend.domain.library.dto.UserBookRequest;
+import whoreads.backend.domain.library.dto.UserBookResponse;
+import whoreads.backend.domain.library.enums.ReadingStatus;
+import whoreads.backend.domain.library.service.UserBookService;
 import whoreads.backend.global.response.ApiResponse;
 
 @RestController
@@ -38,21 +38,30 @@ public class UserBookController implements UserBookControllerDocs {
 
     @Override
     @PostMapping("/book/{bookId}")
-    public ResponseEntity<ApiResponse<UserBookResponse.Detail>> addBookToLibrary(
+    public ResponseEntity<ApiResponse<UserBookResponse.AddResult>> addBookToLibrary(
             @PathVariable Long bookId
     ) {
-        UserBookResponse.Detail detail = userBookService.addBookToLibrary(bookId);
+        UserBookResponse.AddResult result = userBookService.addBookToLibrary(bookId);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.created(detail));
+                .body(ApiResponse.created(result));
     }
 
     @Override
     @PatchMapping("/book/{userBookId}")
-    public ResponseEntity<ApiResponse<UserBookResponse.Detail>> updateUserBook(
+    public ResponseEntity<ApiResponse<Void>> updateUserBook(
             @PathVariable Long userBookId,
             @RequestBody UserBookRequest.UpdateStatus request
     ) {
-        UserBookResponse.Detail detail = userBookService.updateUserBook(userBookId, request);
-        return ResponseEntity.ok(ApiResponse.success(detail));
+        userBookService.updateUserBook(userBookId, request);
+        return ResponseEntity.ok(ApiResponse.success("요청이 성공했습니다."));
+    }
+
+    @Override
+    @DeleteMapping("/book/{userBookId}")
+    public ResponseEntity<ApiResponse<Void>> deleteBookFromLibrary(
+            @PathVariable Long userBookId
+    ) {
+        userBookService.deleteBookFromLibrary(userBookId);
+        return ResponseEntity.ok(ApiResponse.success("서재에서 책이 삭제되었습니다."));
     }
 }

@@ -1,7 +1,7 @@
-package whoreads.backend.domain.userbook.dto;
+package whoreads.backend.domain.library.dto;
 
 import lombok.Getter;
-import whoreads.backend.domain.userbook.enums.ReadingStatus;
+import whoreads.backend.domain.library.enums.ReadingStatus;
 
 public class UserBookRequest {
 

@@ -1,4 +1,4 @@
-package whoreads.backend.domain.userbook.entity;
+package whoreads.backend.domain.library.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,13 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import whoreads.backend.domain.book.entity.Book;
-import whoreads.backend.domain.celebrity.entity.Celebrity;
 import whoreads.backend.domain.member.entity.Member;
-import whoreads.backend.domain.userbook.enums.ReadingStatus;
+import whoreads.backend.domain.library.enums.ReadingStatus;
 import whoreads.backend.global.entity.BaseEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -39,21 +35,12 @@ public class UserBook extends BaseEntity {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_book_celebrity",
-            joinColumns = @JoinColumn(name = "user_book_id"),
-            inverseJoinColumns = @JoinColumn(name = "celebrity_id")
-    )
-    private List<Celebrity> celebrities = new ArrayList<>();
-
     @Builder
-    public UserBook(ReadingStatus readingStatus, Integer readingPage, Member member, Book book, List<Celebrity> celebrities) {
+    public UserBook(ReadingStatus readingStatus, Integer readingPage, Member member, Book book) {
         this.readingStatus = readingStatus;
         this.readingPage = readingPage;
         this.member = member;
         this.book = book;
-        this.celebrities = (celebrities != null) ? celebrities : new ArrayList<>();
     }
 
     public void updateReadingStatus(ReadingStatus readingStatus) {
