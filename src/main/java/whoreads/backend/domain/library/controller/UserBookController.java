@@ -43,7 +43,7 @@ public class UserBookController implements UserBookControllerDocs {
     ) {
         UserBookResponse.AddResult result = userBookService.addBookToLibrary(bookId);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.created(result));
+                .body(ApiResponse.created("책을 추가했습니다.", result));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UserBookController implements UserBookControllerDocs {
             @RequestBody UserBookRequest.UpdateStatus request
     ) {
         userBookService.updateUserBook(userBookId, request);
-        return ResponseEntity.ok(ApiResponse.success("요청이 성공했습니다."));
+        return ResponseEntity.ok(ApiResponse.success("책 상태를 변경했습니다."));
     }
 
     @Override

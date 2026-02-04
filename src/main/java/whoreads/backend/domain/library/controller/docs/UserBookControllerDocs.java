@@ -119,7 +119,7 @@ public interface UserBookControllerDocs {
                                     {
                                       "is_success": true,
                                       "code": 201,
-                                      "message": "리소스가 생성되었습니다.",
+                                      "message": "책을 추가했습니다.",
                                       "result": {
                                         "user_book_id": 42
                                       }
@@ -181,7 +181,7 @@ public interface UserBookControllerDocs {
                                     {
                                       "is_success": true,
                                       "code": 200,
-                                      "message": "요청이 성공했습니다."
+                                      "message": "책 상태를 변경했습니다."
                                     }
                                     """)
                     )

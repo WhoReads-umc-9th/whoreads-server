@@ -84,7 +84,7 @@ public class UserBookServiceImpl implements UserBookService {
     public void updateUserBook(Long userBookId, UserBookRequest.UpdateStatus request) {
         // 비즈니스 로직: status가 READING이 아닌데 readingPage가 있으면 에러
         if (request.getReadingStatus() != ReadingStatus.READING && request.getReadingPage() != null) {
-            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE);
+            throw new CustomException(ErrorCode.INVALID_INPUT_VALUE, "READING 상태인 책만 reading_page를 변경할 수 있습니다.");
         }
 
         // TODO: 실제 구현 시
