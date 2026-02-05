@@ -187,4 +187,95 @@ public interface ReadingSessionSettingsControllerDocs {
             )
     })
     ResponseEntity<ApiResponse<ReadingSessionResponse.WhiteNoiseList>> getWhiteNoiseList();
+
+    @Operation(
+            summary = "차단 앱 목록 조회",
+            description = "사용자가 설정한 차단 앱 목록을 조회합니다."
+    )
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "조회 성공",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(value = """
+                                    {
+                                      "is_success": true,
+                                      "code": 200,
+                                      "message": "요청이 성공했습니다.",
+                                      "result": {
+                                        "blocked_apps": [
+                                          {
+                                            "bundle_id": "com.burbn.instagram",
+                                            "name": "Instagram"
+                                          },
+                                          {
+                                            "bundle_id": "com.google.ios.youtube",
+                                            "name": "YouTube"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                    """)
+                    )
+            )
+    })
+    ResponseEntity<ApiResponse<ReadingSessionResponse.BlockedApps>> getBlockedApps();
+
+    @Operation(
+            summary = "차단 앱 목록 저장",
+            description = "차단할 앱 목록을 저장합니다. 기존 목록을 덮어씁니다."
+    )
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "저장 성공",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(value = """
+                                    {
+                                      "is_success": true,
+                                      "code": 200,
+                                      "message": "차단 앱 목록이 저장되었습니다.",
+                                      "result": {
+                                        "blocked_apps": [
+                                          {
+                                            "bundle_id": "com.burbn.instagram",
+                                            "name": "Instagram"
+                                          },
+                                          {
+                                            "bundle_id": "com.google.ios.youtube",
+                                            "name": "YouTube"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                    """)
+                    )
+            )
+    })
+    ResponseEntity<ApiResponse<ReadingSessionResponse.BlockedApps>> updateBlockedApps(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "차단 앱 목록",
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(value = """
+                                    {
+                                      "blocked_apps": [
+                                        {
+                                          "bundle_id": "com.burbn.instagram",
+                                          "name": "Instagram"
+                                        },
+                                        {
+                                          "bundle_id": "com.google.ios.youtube",
+                                          "name": "YouTube"
+                                        }
+                                      ]
+                                    }
+                                    """)
+                    )
+            )
+            ReadingSessionRequest.UpdateBlockedApps request
+    );
 }

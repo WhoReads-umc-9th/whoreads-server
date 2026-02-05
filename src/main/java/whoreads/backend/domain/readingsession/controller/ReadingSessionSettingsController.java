@@ -54,4 +54,20 @@ public class ReadingSessionSettingsController implements ReadingSessionSettingsC
         ReadingSessionResponse.WhiteNoiseList result = readingSessionSettingsService.getWhiteNoiseList();
         return ResponseEntity.ok(ApiResponse.success(result));
     }
+
+    @Override
+    @GetMapping("/blocked-apps")
+    public ResponseEntity<ApiResponse<ReadingSessionResponse.BlockedApps>> getBlockedApps() {
+        ReadingSessionResponse.BlockedApps result = readingSessionSettingsService.getBlockedApps();
+        return ResponseEntity.ok(ApiResponse.success(result));
+    }
+
+    @Override
+    @PutMapping("/blocked-apps")
+    public ResponseEntity<ApiResponse<ReadingSessionResponse.BlockedApps>> updateBlockedApps(
+            @RequestBody ReadingSessionRequest.UpdateBlockedApps request
+    ) {
+        ReadingSessionResponse.BlockedApps result = readingSessionSettingsService.updateBlockedApps(request.getBlockedApps());
+        return ResponseEntity.ok(ApiResponse.success("차단 앱 목록이 저장되었습니다.", result));
+    }
 }

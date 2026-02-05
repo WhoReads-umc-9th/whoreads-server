@@ -2,6 +2,7 @@ package whoreads.backend.domain.readingsession.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import whoreads.backend.domain.readingsession.dto.ReadingSessionRequest;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 
 import java.util.List;
@@ -91,6 +92,49 @@ public class ReadingSessionSettingsServiceImpl implements ReadingSessionSettings
 
         return ReadingSessionResponse.WhiteNoiseList.builder()
                 .items(items)
+                .build();
+    }
+
+    @Override
+    public ReadingSessionResponse.BlockedApps getBlockedApps() {
+        // TODO: 실제 구현 시
+        // 1. 로그인한 사용자 조회
+        // 2. 사용자의 차단 앱 목록 조회
+
+        // Mock 데이터
+        List<ReadingSessionResponse.BlockedAppItem> blockedApps = List.of(
+                ReadingSessionResponse.BlockedAppItem.builder()
+                        .bundleId("com.burbn.instagram")
+                        .name("Instagram")
+                        .build(),
+                ReadingSessionResponse.BlockedAppItem.builder()
+                        .bundleId("com.google.ios.youtube")
+                        .name("YouTube")
+                        .build()
+        );
+
+        return ReadingSessionResponse.BlockedApps.builder()
+                .blockedApps(blockedApps)
+                .build();
+    }
+
+    @Override
+    public ReadingSessionResponse.BlockedApps updateBlockedApps(List<ReadingSessionRequest.BlockedAppItem> blockedApps) {
+        // TODO: 실제 구현 시
+        // 1. 로그인한 사용자 조회
+        // 2. 기존 차단 앱 목록 삭제
+        // 3. 새 차단 앱 목록 저장
+
+        // Mock: 요청값 그대로 반환
+        List<ReadingSessionResponse.BlockedAppItem> responseItems = blockedApps.stream()
+                .map(app -> ReadingSessionResponse.BlockedAppItem.builder()
+                        .bundleId(app.getBundleId())
+                        .name(app.getName())
+                        .build())
+                .toList();
+
+        return ReadingSessionResponse.BlockedApps.builder()
+                .blockedApps(responseItems)
                 .build();
     }
 }

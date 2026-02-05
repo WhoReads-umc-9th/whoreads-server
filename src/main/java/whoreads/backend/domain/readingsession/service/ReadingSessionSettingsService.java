@@ -1,5 +1,6 @@
 package whoreads.backend.domain.readingsession.service;
 
+import whoreads.backend.domain.readingsession.dto.ReadingSessionRequest;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 
 public interface ReadingSessionSettingsService {
@@ -13,4 +14,8 @@ public interface ReadingSessionSettingsService {
     ReadingSessionResponse.WhiteNoiseSetting updateWhiteNoiseSetting(Boolean whiteNoiseEnabled);
 
     ReadingSessionResponse.WhiteNoiseList getWhiteNoiseList();
+
+    ReadingSessionResponse.BlockedApps getBlockedApps();
+
+    ReadingSessionResponse.BlockedApps updateBlockedApps(java.util.List<ReadingSessionRequest.BlockedAppItem> blockedApps);
 }

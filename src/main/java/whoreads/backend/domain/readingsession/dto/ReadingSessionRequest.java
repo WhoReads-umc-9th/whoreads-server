@@ -18,4 +18,15 @@ public class ReadingSessionRequest {
     public static class UpdateWhiteNoise {
         private Boolean whiteNoiseEnabled;
     }
+
+    @Getter
+    public static class UpdateBlockedApps {
+        private java.util.List<BlockedAppItem> blockedApps;
+    }
+
+    @Getter
+    public static class BlockedAppItem {
+        private String bundleId;
+        private String name;
+    }
 }

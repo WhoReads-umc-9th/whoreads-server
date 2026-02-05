@@ -89,4 +89,17 @@ public class ReadingSessionResponse {
         private String name;
         private String audioUrl;
     }
+
+    @Getter
+    @Builder
+    public static class BlockedApps {
+        private List<BlockedAppItem> blockedApps;
+    }
+
+    @Getter
+    @Builder
+    public static class BlockedAppItem {
+        private String bundleId;
+        private String name;
+    }
 }
