@@ -63,4 +63,16 @@ public class ReadingSessionResponse {
         private LocalTime endTime;
         private Integer totalMinutes;
     }
+
+    @Getter
+    @Builder
+    public static class FocusBlockSetting {
+        private Boolean focusBlockEnabled;
+    }
+
+    @Getter
+    @Builder
+    public static class WhiteNoiseSetting {
+        private Boolean whiteNoiseEnabled;
+    }
 }

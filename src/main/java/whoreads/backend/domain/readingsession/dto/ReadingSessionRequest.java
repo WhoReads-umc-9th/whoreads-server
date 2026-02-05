@@ -8,4 +8,14 @@ public class ReadingSessionRequest {
     public static class Start {
         private Long memberId;
     }
+
+    @Getter
+    public static class UpdateFocusBlock {
+        private Boolean focusBlockEnabled;
+    }
+
+    @Getter
+    public static class UpdateWhiteNoise {
+        private Boolean whiteNoiseEnabled;
+    }
 }
