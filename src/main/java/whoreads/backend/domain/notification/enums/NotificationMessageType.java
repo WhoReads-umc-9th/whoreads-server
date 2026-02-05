@@ -6,6 +6,8 @@ import whoreads.backend.domain.notification.event.NotificationEvent;
 import whoreads.backend.global.exception.CustomException;
 import whoreads.backend.global.exception.ErrorCode;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 
 @Getter
 @RequiredArgsConstructor
@@ -32,8 +34,8 @@ public enum NotificationMessageType {
 
         @Override
         public String[] generate(NotificationEvent event) {
-            int randomIndex = new java.util.Random().nextInt(messages.length);
-            return messages[randomIndex];
+            int randomIndex = ThreadLocalRandom.current().nextInt(messages.length);
+            return new String[]{messages[randomIndex][0], messages[randomIndex][1]};
         }
     };
 
