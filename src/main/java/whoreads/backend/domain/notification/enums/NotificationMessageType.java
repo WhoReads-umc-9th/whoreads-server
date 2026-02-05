@@ -2,12 +2,24 @@ package whoreads.backend.domain.notification.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import java.util.Random;
+import whoreads.backend.domain.notification.event.NotificationEvent;
+
 
 @Getter
 @RequiredArgsConstructor
 public enum NotificationMessageType {
-    NEW_FOLLOW_BOOK("%s의 서재에 새 책이 추가됐어요!", "『%s』%s"),
+    NEW_FOLLOW_BOOK("%s의 서재에 새 책이 추가됐어요!", "『%s』 %s") {
+        @Override
+        public String[] generate(Object event) {
+            if (event instanceof NotificationEvent.FollowEvent e) {
+                return new String[]{
+                        String.format(getTitleTemplate(), e.celebName()),
+                        String.format(getBodyTemplate(), e.bookName(), e.authorName())
+                };
+            }
+            throw new IllegalArgumentException("Invalid event type for NEW_FOLLOW_BOOK");
+        }
+    },
 
     BOOK_ROUTINE("독서 루틴 알림", "") {
         private final String[][] messages = {
@@ -17,8 +29,8 @@ public enum NotificationMessageType {
         };
 
         @Override
-        public String[] generate(Object... args) {
-            int randomIndex = new Random().nextInt(messages.length);
+        public String[] generate(Object event) {
+            int randomIndex = new java.util.Random().nextInt(messages.length);
             return messages[randomIndex];
         }
     };
@@ -26,10 +38,5 @@ public enum NotificationMessageType {
     private final String titleTemplate;
     private final String bodyTemplate;
 
-    public String[] generate(Object... args) {
-        return new String[]{
-                String.format(titleTemplate, args),
-                String.format(bodyTemplate, args)
-        };
-    }
+    public abstract String[] generate(Object event);
 }
