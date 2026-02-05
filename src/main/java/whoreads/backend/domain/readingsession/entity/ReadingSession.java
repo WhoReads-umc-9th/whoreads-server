@@ -5,9 +5,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import whoreads.backend.domain.readingsession.enums.SessionStatus;
 import whoreads.backend.global.entity.BaseEntity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,24 +22,51 @@ public class ReadingSession extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // startTime은 BaseEntity의 createdAt 사용
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
-    @Column(name = "end_time")
-    private LocalDateTime endTime;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SessionStatus status;
 
-    @Column(name = "focus_minute")
-    private Integer focusMinute;
+    @Column(name = "total_minutes")
+    private Integer totalMinutes;
 
-    // TODO: 추후 UserBook 연관관계 추가 예정
+    @Column(name = "finished_at")
+    private LocalDateTime finishedAt;
+
+    @OneToMany(mappedBy = "readingSession", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReadingInterval> intervals = new ArrayList<>();
 
     @Builder
-    public ReadingSession(LocalDateTime endTime, Integer focusMinute) {
-        this.endTime = endTime;
-        this.focusMinute = focusMinute;
+    public ReadingSession(Long memberId) {
+        this.memberId = memberId;
+        this.status = SessionStatus.IN_PROGRESS;
+        this.totalMinutes = 0;
     }
 
-    public void endSession(LocalDateTime endTime, Integer focusMinute) {
-        this.endTime = endTime;
-        this.focusMinute = focusMinute;
+    public void pause() {
+        this.status = SessionStatus.PAUSED;
+    }
+
+    public void resume() {
+        this.status = SessionStatus.IN_PROGRESS;
+    }
+
+    public void complete(Integer totalMinutes) {
+        this.status = SessionStatus.COMPLETED;
+        this.totalMinutes = totalMinutes;
+        this.finishedAt = LocalDateTime.now();
+    }
+
+    public void addInterval(ReadingInterval interval) {
+        this.intervals.add(interval);
+    }
+
+    public int calculateTotalMinutes() {
+        return this.intervals.stream()
+                .filter(interval -> interval.getDurationMinutes() != null)
+                .mapToInt(ReadingInterval::getDurationMinutes)
+                .sum();
     }
 }

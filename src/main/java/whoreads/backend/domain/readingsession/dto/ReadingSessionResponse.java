@@ -2,10 +2,36 @@ package whoreads.backend.domain.readingsession.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import whoreads.backend.domain.readingsession.enums.SessionStatus;
 
-@Getter
-@Builder
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class ReadingSessionResponse {
 
-    private Long id;
+    @Getter
+    @Builder
+    public static class StartResult {
+        private Long sessionId;
+    }
+
+    @Getter
+    @Builder
+    public static class SessionDetail {
+        private Long sessionId;
+        private SessionStatus status;
+        private Integer totalMinutes;
+        private LocalDateTime createdAt;
+        private LocalDateTime finishedAt;
+        private List<IntervalInfo> intervals;
+    }
+
+    @Getter
+    @Builder
+    public static class IntervalInfo {
+        private Long intervalId;
+        private LocalDateTime startTime;
+        private LocalDateTime endTime;
+        private Integer durationMinutes;
+    }
 }
