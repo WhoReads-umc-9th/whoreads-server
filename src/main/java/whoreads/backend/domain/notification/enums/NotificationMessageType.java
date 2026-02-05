@@ -3,6 +3,8 @@ package whoreads.backend.domain.notification.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import whoreads.backend.domain.notification.event.NotificationEvent;
+import whoreads.backend.global.exception.CustomException;
+import whoreads.backend.global.exception.ErrorCode;
 
 
 @Getter
@@ -10,14 +12,14 @@ import whoreads.backend.domain.notification.event.NotificationEvent;
 public enum NotificationMessageType {
     NEW_FOLLOW_BOOK("%s의 서재에 새 책이 추가됐어요!", "『%s』 %s") {
         @Override
-        public String[] generate(Object event) {
+        public String[] generate(NotificationEvent event) {
             if (event instanceof NotificationEvent.FollowEvent e) {
                 return new String[]{
                         String.format(getTitleTemplate(), e.celebName()),
                         String.format(getBodyTemplate(), e.bookName(), e.authorName())
                 };
             }
-            throw new IllegalArgumentException("Invalid event type for NEW_FOLLOW_BOOK");
+            throw new CustomException(ErrorCode.FCM_SEND_FAILED);
         }
     },
 
@@ -29,7 +31,7 @@ public enum NotificationMessageType {
         };
 
         @Override
-        public String[] generate(Object event) {
+        public String[] generate(NotificationEvent event) {
             int randomIndex = new java.util.Random().nextInt(messages.length);
             return messages[randomIndex];
         }
@@ -38,5 +40,5 @@ public enum NotificationMessageType {
     private final String titleTemplate;
     private final String bodyTemplate;
 
-    public abstract String[] generate(Object event);
+    public abstract String[] generate(NotificationEvent event);
 }
