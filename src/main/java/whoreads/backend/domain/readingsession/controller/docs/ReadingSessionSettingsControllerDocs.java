@@ -224,7 +224,12 @@ public interface ReadingSessionSettingsControllerDocs {
 
     @Operation(
             summary = "차단 앱 목록 저장",
-            description = "차단할 앱 목록을 저장합니다. 기존 목록을 덮어씁니다."
+            description = """
+                    차단할 앱 목록을 저장합니다.
+                    - **전체 덮어쓰기**: 기존 목록을 완전히 교체합니다.
+                    - 추가/삭제 시에도 전체 목록을 보내주세요.
+                    - 빈 배열을 보내면 모든 차단 앱이 해제됩니다.
+                    """
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
