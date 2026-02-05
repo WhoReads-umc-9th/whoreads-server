@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import whoreads.backend.domain.member.entity.Member;
 import whoreads.backend.domain.member.repository.MemberRepository;
 import whoreads.backend.domain.notification.dto.FcmMessageDTO;
@@ -20,7 +22,7 @@ public class NotificationEventListener {
     private final MemberRepository memberRepository;
 
     @Async("WhoReadsAsyncExecutor")
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleFollowEvent(NotificationEvent.FollowEvent event) {
         FcmMessageDTO message = FcmMessageDTO.of(NotificationType.FOLLOW, event);
 
