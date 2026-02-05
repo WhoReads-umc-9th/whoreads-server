@@ -22,20 +22,18 @@ public class NotificationEventListener {
     @Async("WhoReadsAsyncExecutor")
     @EventListener
     public void handleFollowEvent(NotificationEvent.FollowEvent event) {
-        System.out.println(event + " start to sending");
         FcmMessageDTO message = FcmMessageDTO.of(NotificationType.FOLLOW, event);
 
         /* todo: 해당 유명인을 팔로우 한 사람들 찾기
             findById 사용시 N+1 문제 발생 -> 추후 유명인 팔로우 도메인 완성시 수정 예정!
          */
-        List<Long> followList = List.of(2l,3l);
+        List<Long> followList = List.of(2L,3L);
         List<String> tokens = followList.stream()
                 .map(memberRepository::findById)
                 .flatMap(Optional::stream)
                 .map(Member::getFcmToken)
                 .filter(token -> token != null && !token.isBlank())
                 .toList();
-        System.out.println(message + " ready to sending");
 
         pushService.sendMulticast(tokens,message);
     }
