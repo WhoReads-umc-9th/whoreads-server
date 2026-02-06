@@ -118,8 +118,11 @@ public class ReadingSessionSettingsServiceImpl implements ReadingSessionSettings
                 .build();
     }
 
-    @Override
+    `@Override`
     public ReadingSessionResponse.BlockedApps updateBlockedApps(List<ReadingSessionRequest.BlockedAppItem> blockedApps) {
+        if (blockedApps == null) {
+            blockedApps = List.of();
+        }
         // TODO: 실제 구현 시
         // 1. 로그인한 사용자 조회
         // 2. 기존 차단 앱 목록 삭제
