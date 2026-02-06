@@ -2,6 +2,7 @@ package whoreads.backend.domain.notification.service;
 
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationPushServiceImpl implements NotificationPushService {
 
     private final FirebaseMessaging firebaseMessaging;
@@ -70,7 +72,6 @@ public class NotificationPushServiceImpl implements NotificationPushService {
     
     // 팔로우나 루틴 알림처럼 대량 발송
     @Async("WhoReadsAsyncExecutor")
-    @Transactional
     public void sendMulticast(List<String> tokens, FcmMessageDTO dto) {
         if (tokens == null || tokens.isEmpty()) return;
 
@@ -83,36 +84,22 @@ public class NotificationPushServiceImpl implements NotificationPushService {
                             .setTitle(dto.getTitle())
                             .setBody(dto.getBody())
                             .build())
+                    // ios 전용 설정 ( 알림 클릭 시 동작 및 소리 )
+                    .setApnsConfig(ApnsConfig.builder()
+                            .setAps(Aps.builder()
+                                    .setCategory("CLICK_ACTION")
+                                    .setSound("default")
+                                    .build())
+                            .build())
                     .putData("title", dto.getTitle())
                     .putData("body", dto.getBody())
                     .putData("type", dto.getType())
                     .putData("link", Optional.ofNullable(dto.getLink()).orElse(""))
                     .build();
             try {
-                BatchResponse response = firebaseMessaging.sendEachForMulticast(message);
-
-                if (response.getFailureCount() > 0) {
-                    List<SendResponse> responses = response.getResponses();
-
-                    for (int j = 0; j < responses.size(); j++) {
-                        SendResponse res = responses.get(j);
-
-                        // 1. 성공했거나 예외 정보가 없으면 스킵 (Guard Clause)
-                        if (res.isSuccessful() || res.getException() == null) {
-                            continue;
-                        }
-
-                        // 2. 에러 코드 확인 및 토큰 삭제 처리
-                        MessagingErrorCode errorCode = res.getException().getMessagingErrorCode();
-                        if (errorCode == MessagingErrorCode.UNREGISTERED ||
-                                errorCode == MessagingErrorCode.INVALID_ARGUMENT) {
-
-                            memberRepository.clearToken(subList.get(j));
-                        }
-                    }
-                }
+                firebaseMessaging.sendEachForMulticast(message);
             } catch (FirebaseMessagingException e) {
-                throw new CustomException(ErrorCode.FCM_SEND_FAILED);
+                log.error("[FCM Error] 원인: {}, 메시지: {}", e.getMessagingErrorCode(), e.getMessage());
             }
         }
     }
