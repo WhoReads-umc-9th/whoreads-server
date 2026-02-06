@@ -71,7 +71,6 @@ public class NotificationPushServiceImpl implements NotificationPushService {
     }
     
     // 팔로우나 루틴 알림처럼 대량 발송
-    @Async("WhoReadsAsyncExecutor")
     public void sendMulticast(List<String> tokens, FcmMessageDTO dto) {
         if (tokens == null || tokens.isEmpty()) return;
 
