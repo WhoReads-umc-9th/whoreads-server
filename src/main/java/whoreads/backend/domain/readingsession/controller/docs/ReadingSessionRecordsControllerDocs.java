@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 import whoreads.backend.global.response.ApiResponse;
 
-@Tag(name = "Reading Session Records (독서 기록)", description = "독서 세션 기록 조회 API | by 쏘이/김서연")
+@Tag(name = "Reading Session - Records", description = "독서 기록/통계 API | by 쏘이/김서연")
 public interface ReadingSessionRecordsControllerDocs {
 
     @Operation(
@@ -33,20 +33,20 @@ public interface ReadingSessionRecordsControllerDocs {
                                         "records": [
                                           {
                                             "day": 1,
-                                            "start_time": "14:00:00",
-                                            "end_time": "14:45:00",
+                                            "start_time": "14:00",
+                                            "end_time": "14:45",
                                             "total_minutes": 45
                                           },
                                           {
                                             "day": 1,
-                                            "start_time": "20:00:00",
-                                            "end_time": "20:30:00",
+                                            "start_time": "20:00",
+                                            "end_time": "20:30",
                                             "total_minutes": 30
                                           },
                                           {
                                             "day": 3,
-                                            "start_time": "10:00:00",
-                                            "end_time": "11:20:00",
+                                            "start_time": "10:00",
+                                            "end_time": "11:20",
                                             "total_minutes": 80
                                           }
                                         ]

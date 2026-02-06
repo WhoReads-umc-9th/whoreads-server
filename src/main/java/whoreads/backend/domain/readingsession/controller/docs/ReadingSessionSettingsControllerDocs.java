@@ -11,7 +11,7 @@ import whoreads.backend.domain.readingsession.dto.ReadingSessionRequest;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 import whoreads.backend.global.response.ApiResponse;
 
-@Tag(name = "Reading Session Settings (독서 설정)", description = "독서 세션 설정 API | by 쏘이/김서연")
+@Tag(name = "Timer - Settings", description = "독서 타이머 설정 API | by 쏘이/김서연")
 public interface ReadingSessionSettingsControllerDocs {
 
     @Operation(
@@ -41,7 +41,10 @@ public interface ReadingSessionSettingsControllerDocs {
 
     @Operation(
             summary = "집중 차단 모드 설정 변경",
-            description = "집중 차단 모드를 켜거나 끕니다. 타이머 시작 시 이 설정값이 적용됩니다."
+            description = """
+                    집중 차단 모드를 켜거나 끕니다. 타이머 시작 시 이 설정값이 적용됩니다.
+                    - 토글 방식이 아닌 명시적 값을 받습니다. (네트워크 재시도 시 상태 불일치 방지)
+                    """
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -105,7 +108,10 @@ public interface ReadingSessionSettingsControllerDocs {
 
     @Operation(
             summary = "백색소음 설정 변경",
-            description = "백색소음을 켜거나 끕니다. 타이머 시작 시 이 설정값이 적용됩니다."
+            description = """
+                    백색소음을 켜거나 끕니다. 타이머 시작 시 이 설정값이 적용됩니다.
+                    - 토글 방식이 아닌 명시적 값을 받습니다. (네트워크 재시도 시 상태 불일치 방지)
+                    """
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(

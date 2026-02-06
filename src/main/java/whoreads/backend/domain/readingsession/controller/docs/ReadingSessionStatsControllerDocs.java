@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 import whoreads.backend.global.response.ApiResponse;
 
-@Tag(name = "Reading Session Stats (독서 통계)", description = "독서 세션 통계 API | by 쏘이/김서연")
+@Tag(name = "Reading Session - Records", description = "독서 기록/통계 API | by 쏘이/김서연")
 public interface ReadingSessionStatsControllerDocs {
 
     @Operation(
@@ -19,6 +19,7 @@ public interface ReadingSessionStatsControllerDocs {
                     오늘의 독서 시간과 어제와의 차이를 조회합니다.
                     - 날짜 경계(00:00)를 기준으로 시간을 분할하여 계산합니다.
                     - 예: 23:50~00:10 인터벌은 어제 10분, 오늘 10분으로 분리됩니다.
+                    - difference_from_yesterday: 양수면 오늘이 어제보다 많음, 음수면 오늘이 어제보다 적음
                     """
     )
     @ApiResponses(value = {

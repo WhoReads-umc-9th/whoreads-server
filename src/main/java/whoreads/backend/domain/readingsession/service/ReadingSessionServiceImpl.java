@@ -46,37 +46,11 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
     }
 
     @Override
-    public ReadingSessionResponse.SessionDetail completeSession(Long sessionId) {
+    public void completeSession(Long sessionId) {
         // TODO: 실제 구현 시
         // 1. sessionId로 세션 조회 (없으면 404)
         // 2. 진행중인 interval이 있으면 종료
         // 3. 모든 interval의 durationMinutes 합산
         // 4. 세션 상태를 COMPLETED로 변경, totalMinutes/finishedAt 설정
-
-        LocalDateTime now = LocalDateTime.now();
-
-        List<ReadingSessionResponse.IntervalInfo> intervals = List.of(
-                ReadingSessionResponse.IntervalInfo.builder()
-                        .intervalId(1L)
-                        .startTime(now.minusMinutes(50))
-                        .endTime(now.minusMinutes(25))
-                        .durationMinutes(25)
-                        .build(),
-                ReadingSessionResponse.IntervalInfo.builder()
-                        .intervalId(2L)
-                        .startTime(now.minusMinutes(20))
-                        .endTime(now)
-                        .durationMinutes(20)
-                        .build()
-        );
-
-        return ReadingSessionResponse.SessionDetail.builder()
-                .sessionId(sessionId)
-                .status(SessionStatus.COMPLETED)
-                .totalMinutes(45)
-                .createdAt(now.minusMinutes(50))
-                .finishedAt(now)
-                .intervals(intervals)
-                .build();
     }
 }

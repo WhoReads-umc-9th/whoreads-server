@@ -8,11 +8,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import whoreads.backend.domain.readingsession.dto.ReadingSessionRequest;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 import whoreads.backend.global.response.ApiResponse;
 
-@Tag(name = "Reading Session (독서 타임)", description = "독서 세션 타이머 API | by 쏘이/김서연")
+@Tag(name = "Timer", description = "독서 타이머 API | by 쏘이/김서연")
 public interface ReadingSessionControllerDocs {
 
     @Operation(
@@ -38,21 +37,7 @@ public interface ReadingSessionControllerDocs {
                     )
             )
     })
-    ResponseEntity<ApiResponse<ReadingSessionResponse.StartResult>> startSession(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "세션 시작 요청",
-                    required = true,
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            examples = @ExampleObject(value = """
-                                    {
-                                      "member_id": 1
-                                    }
-                                    """)
-                    )
-            )
-            ReadingSessionRequest.Start request
-    );
+    ResponseEntity<ApiResponse<ReadingSessionResponse.StartResult>> startSession(Long memberId);
 
     @Operation(
             summary = "독서 세션 일시정지",
@@ -162,7 +147,7 @@ public interface ReadingSessionControllerDocs {
 
     @Operation(
             summary = "독서 세션 완료",
-            description = "독서 세션을 완료합니다. 모든 인터벌의 시간을 합산하여 총 독서 시간을 반환합니다."
+            description = "독서 세션을 완료합니다."
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -174,28 +159,7 @@ public interface ReadingSessionControllerDocs {
                                     {
                                       "is_success": true,
                                       "code": 200,
-                                      "message": "요청이 성공했습니다.",
-                                      "result": {
-                                        "session_id": 1,
-                                        "status": "COMPLETED",
-                                        "total_minutes": 45,
-                                        "created_at": "2026-02-06T14:00:00",
-                                        "finished_at": "2026-02-06T14:50:00",
-                                        "intervals": [
-                                          {
-                                            "interval_id": 1,
-                                            "start_time": "2026-02-06T14:00:00",
-                                            "end_time": "2026-02-06T14:25:00",
-                                            "duration_minutes": 25
-                                          },
-                                          {
-                                            "interval_id": 2,
-                                            "start_time": "2026-02-06T14:30:00",
-                                            "end_time": "2026-02-06T14:50:00",
-                                            "duration_minutes": 20
-                                          }
-                                        ]
-                                      }
+                                      "message": "독서 세션을 완료했습니다."
                                     }
                                     """)
                     )
@@ -215,7 +179,7 @@ public interface ReadingSessionControllerDocs {
                     )
             )
     })
-    ResponseEntity<ApiResponse<ReadingSessionResponse.SessionDetail>> completeSession(
+    ResponseEntity<ApiResponse<Void>> completeSession(
             @Parameter(description = "세션 ID", required = true)
             Long sessionId
     );

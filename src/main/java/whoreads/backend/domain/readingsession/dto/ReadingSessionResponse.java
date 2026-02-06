@@ -1,5 +1,6 @@
 package whoreads.backend.domain.readingsession.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import whoreads.backend.domain.readingsession.enums.SessionStatus;
@@ -59,7 +60,9 @@ public class ReadingSessionResponse {
     @Builder
     public static class DailyRecord {
         private Integer day;
+        @JsonFormat(pattern = "HH:mm")
         private LocalTime startTime;
+        @JsonFormat(pattern = "HH:mm")
         private LocalTime endTime;
         private Integer totalMinutes;
     }

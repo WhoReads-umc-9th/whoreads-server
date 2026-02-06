@@ -3,9 +3,9 @@ package whoreads.backend.domain.readingsession.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import whoreads.backend.domain.readingsession.controller.docs.ReadingSessionControllerDocs;
-import whoreads.backend.domain.readingsession.dto.ReadingSessionRequest;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 import whoreads.backend.domain.readingsession.service.ReadingSessionService;
 import whoreads.backend.global.response.ApiResponse;
@@ -20,9 +20,9 @@ public class ReadingSessionController implements ReadingSessionControllerDocs {
     @Override
     @PostMapping("/start")
     public ResponseEntity<ApiResponse<ReadingSessionResponse.StartResult>> startSession(
-            @RequestBody ReadingSessionRequest.Start request
+            @AuthenticationPrincipal Long memberId
     ) {
-        ReadingSessionResponse.StartResult result = readingSessionService.startSession(request.getMemberId());
+        ReadingSessionResponse.StartResult result = readingSessionService.startSession(memberId);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.created("독서 세션을 시작했습니다.", result));
     }
@@ -47,10 +47,10 @@ public class ReadingSessionController implements ReadingSessionControllerDocs {
 
     @Override
     @PostMapping("/{sessionId}/complete")
-    public ResponseEntity<ApiResponse<ReadingSessionResponse.SessionDetail>> completeSession(
+    public ResponseEntity<ApiResponse<Void>> completeSession(
             @PathVariable Long sessionId
     ) {
-        ReadingSessionResponse.SessionDetail result = readingSessionService.completeSession(sessionId);
-        return ResponseEntity.ok(ApiResponse.success(result));
+        readingSessionService.completeSession(sessionId);
+        return ResponseEntity.ok(ApiResponse.success("독서 세션을 완료했습니다."));
     }
 }

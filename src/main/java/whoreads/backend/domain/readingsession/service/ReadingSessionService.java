@@ -10,5 +10,5 @@ public interface ReadingSessionService {
 
     void resumeSession(Long sessionId);
 
-    ReadingSessionResponse.SessionDetail completeSession(Long sessionId);
+    void completeSession(Long sessionId);
 }
