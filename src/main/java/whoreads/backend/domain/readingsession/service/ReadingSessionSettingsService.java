@@ -1,6 +1,6 @@
 package whoreads.backend.domain.readingsession.service;
 
-import whoreads.backend.domain.readingsession.dto.ReadingSessionRequest;
+import whoreads.backend.domain.readingsession.dto.BlockedAppItem;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 
 import java.util.List;
@@ -19,5 +19,5 @@ public interface ReadingSessionSettingsService {
 
     ReadingSessionResponse.BlockedApps getBlockedApps(Long memberId);
 
-    ReadingSessionResponse.BlockedApps updateBlockedApps(Long memberId, List<ReadingSessionRequest.BlockedAppItem> blockedApps);
+    ReadingSessionResponse.BlockedApps updateBlockedApps(Long memberId, List<BlockedAppItem> blockedApps);
 }

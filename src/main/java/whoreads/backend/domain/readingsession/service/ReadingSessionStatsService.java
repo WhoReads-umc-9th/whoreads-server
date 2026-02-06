@@ -4,7 +4,7 @@ import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 
 public interface ReadingSessionStatsService {
 
-    ReadingSessionResponse.TodayFocus getTodayFocus();
+    ReadingSessionResponse.TodayFocus getTodayFocus(Long memberId);
 
-    ReadingSessionResponse.TotalFocus getTotalFocus();
+    ReadingSessionResponse.TotalFocus getTotalFocus(Long memberId);
 }

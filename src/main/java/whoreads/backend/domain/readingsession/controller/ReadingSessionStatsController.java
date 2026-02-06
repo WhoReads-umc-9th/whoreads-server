@@ -2,6 +2,7 @@ package whoreads.backend.domain.readingsession.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,15 +20,19 @@ public class ReadingSessionStatsController implements ReadingSessionStatsControl
 
     @Override
     @GetMapping("/today")
-    public ResponseEntity<ApiResponse<ReadingSessionResponse.TodayFocus>> getTodayFocus() {
-        ReadingSessionResponse.TodayFocus result = readingSessionStatsService.getTodayFocus();
+    public ResponseEntity<ApiResponse<ReadingSessionResponse.TodayFocus>> getTodayFocus(
+            @AuthenticationPrincipal Long memberId
+    ) {
+        ReadingSessionResponse.TodayFocus result = readingSessionStatsService.getTodayFocus(memberId);
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 
     @Override
     @GetMapping("/total")
-    public ResponseEntity<ApiResponse<ReadingSessionResponse.TotalFocus>> getTotalFocus() {
-        ReadingSessionResponse.TotalFocus result = readingSessionStatsService.getTotalFocus();
+    public ResponseEntity<ApiResponse<ReadingSessionResponse.TotalFocus>> getTotalFocus(
+            @AuthenticationPrincipal Long memberId
+    ) {
+        ReadingSessionResponse.TotalFocus result = readingSessionStatsService.getTotalFocus(memberId);
         return ResponseEntity.ok(ApiResponse.success(result));
     }
 }

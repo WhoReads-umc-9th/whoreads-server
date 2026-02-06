@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import whoreads.backend.domain.member.entity.Member;
 import whoreads.backend.domain.readingsession.enums.SessionStatus;
 import whoreads.backend.global.entity.BaseEntity;
 
@@ -22,8 +23,9 @@ public class ReadingSession extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "member_id", nullable = false)
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -39,21 +41,30 @@ public class ReadingSession extends BaseEntity {
     private List<ReadingInterval> intervals = new ArrayList<>();
 
     @Builder
-    public ReadingSession(Long memberId) {
-        this.memberId = memberId;
+    public ReadingSession(Member member) {
+        this.member = member;
         this.status = SessionStatus.IN_PROGRESS;
         this.totalMinutes = 0;
     }
 
     public void pause() {
+        if (this.status != SessionStatus.IN_PROGRESS) {
+            throw new IllegalStateException("진행 중인 세션만 일시정지할 수 있습니다. 현재 상태: " + this.status);
+        }
         this.status = SessionStatus.PAUSED;
     }
 
     public void resume() {
+        if (this.status != SessionStatus.PAUSED) {
+            throw new IllegalStateException("일시정지된 세션만 재개할 수 있습니다. 현재 상태: " + this.status);
+        }
         this.status = SessionStatus.IN_PROGRESS;
     }
 
     public void complete(Integer totalMinutes) {
+        if (this.status == SessionStatus.COMPLETED) {
+            throw new IllegalStateException("이미 완료된 세션입니다.");
+        }
         this.status = SessionStatus.COMPLETED;
         this.totalMinutes = totalMinutes;
         this.finishedAt = LocalDateTime.now();
@@ -61,6 +72,12 @@ public class ReadingSession extends BaseEntity {
 
     public void addInterval(ReadingInterval interval) {
         this.intervals.add(interval);
+        interval.setReadingSession(this);
+    }
+
+    public void removeInterval(ReadingInterval interval) {
+        this.intervals.remove(interval);
+        interval.setReadingSession(null);
     }
 
     public int calculateTotalMinutes() {

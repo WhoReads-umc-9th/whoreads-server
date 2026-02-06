@@ -42,7 +42,9 @@ public interface ReadingSessionStatsControllerDocs {
                     )
             )
     })
-    ResponseEntity<ApiResponse<ReadingSessionResponse.TodayFocus>> getTodayFocus();
+    ResponseEntity<ApiResponse<ReadingSessionResponse.TodayFocus>> getTodayFocus(
+            Long memberId
+    );
 
     @Operation(
             summary = "총 집중 시간 조회",
@@ -67,5 +69,7 @@ public interface ReadingSessionStatsControllerDocs {
                     )
             )
     })
-    ResponseEntity<ApiResponse<ReadingSessionResponse.TotalFocus>> getTotalFocus();
+    ResponseEntity<ApiResponse<ReadingSessionResponse.TotalFocus>> getTotalFocus(
+            Long memberId
+    );
 }

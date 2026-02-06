@@ -40,8 +40,8 @@ public class ReadingSessionResponse {
     @Getter
     @Builder
     public static class TodayFocus {
-        private Integer todayMinutes;
-        private Integer differenceFromYesterday;
+        private Long todayMinutes;
+        private Long differenceFromYesterday;
     }
 
     @Getter
@@ -97,12 +97,5 @@ public class ReadingSessionResponse {
     @Builder
     public static class BlockedApps {
         private List<BlockedAppItem> blockedApps;
-    }
-
-    @Getter
-    @Builder
-    public static class BlockedAppItem {
-        private String bundleId;
-        private String name;
     }
 }

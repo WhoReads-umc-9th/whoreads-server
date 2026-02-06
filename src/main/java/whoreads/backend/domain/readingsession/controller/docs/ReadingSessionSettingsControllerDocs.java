@@ -1,7 +1,6 @@
 package whoreads.backend.domain.readingsession.controller.docs;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -39,7 +38,7 @@ public interface ReadingSessionSettingsControllerDocs {
             )
     })
     ResponseEntity<ApiResponse<ReadingSessionResponse.FocusBlockSetting>> getFocusBlockSetting(
-            @Parameter(hidden = true) Long memberId
+            Long memberId
     );
 
     @Operation(
@@ -83,7 +82,7 @@ public interface ReadingSessionSettingsControllerDocs {
             )
     })
     ResponseEntity<ApiResponse<ReadingSessionResponse.FocusBlockSetting>> updateFocusBlockSetting(
-            @Parameter(hidden = true) Long memberId,
+            Long memberId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "집중 차단 모드 설정",
                     required = true,
@@ -123,7 +122,7 @@ public interface ReadingSessionSettingsControllerDocs {
             )
     })
     ResponseEntity<ApiResponse<ReadingSessionResponse.WhiteNoiseSetting>> getWhiteNoiseSetting(
-            @Parameter(hidden = true) Long memberId
+            Long memberId
     );
 
     @Operation(
@@ -167,7 +166,7 @@ public interface ReadingSessionSettingsControllerDocs {
             )
     })
     ResponseEntity<ApiResponse<ReadingSessionResponse.WhiteNoiseSetting>> updateWhiteNoiseSetting(
-            @Parameter(hidden = true) Long memberId,
+            Long memberId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "백색소음 설정",
                     required = true,
@@ -262,7 +261,7 @@ public interface ReadingSessionSettingsControllerDocs {
             )
     })
     ResponseEntity<ApiResponse<ReadingSessionResponse.BlockedApps>> getBlockedApps(
-            @Parameter(hidden = true) Long memberId
+            Long memberId
     );
 
     @Operation(
@@ -317,7 +316,7 @@ public interface ReadingSessionSettingsControllerDocs {
             )
     })
     ResponseEntity<ApiResponse<ReadingSessionResponse.BlockedApps>> updateBlockedApps(
-            @Parameter(hidden = true) Long memberId,
+            Long memberId,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "차단 앱 목록",
                     required = true,

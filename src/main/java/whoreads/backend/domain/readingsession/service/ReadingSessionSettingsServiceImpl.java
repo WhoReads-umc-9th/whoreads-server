@@ -2,7 +2,7 @@ package whoreads.backend.domain.readingsession.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import whoreads.backend.domain.readingsession.dto.ReadingSessionRequest;
+import whoreads.backend.domain.readingsession.dto.BlockedAppItem;
 import whoreads.backend.domain.readingsession.dto.ReadingSessionResponse;
 
 import java.util.List;
@@ -102,12 +102,12 @@ public class ReadingSessionSettingsServiceImpl implements ReadingSessionSettings
         // 2. 사용자의 차단 앱 목록 조회
 
         // Mock 데이터
-        List<ReadingSessionResponse.BlockedAppItem> blockedApps = List.of(
-                ReadingSessionResponse.BlockedAppItem.builder()
+        List<BlockedAppItem> blockedApps = List.of(
+                BlockedAppItem.builder()
                         .bundleId("com.burbn.instagram")
                         .name("Instagram")
                         .build(),
-                ReadingSessionResponse.BlockedAppItem.builder()
+                BlockedAppItem.builder()
                         .bundleId("com.google.ios.youtube")
                         .name("YouTube")
                         .build()
@@ -119,7 +119,7 @@ public class ReadingSessionSettingsServiceImpl implements ReadingSessionSettings
     }
 
     @Override
-    public ReadingSessionResponse.BlockedApps updateBlockedApps(Long memberId, List<ReadingSessionRequest.BlockedAppItem> blockedApps) {
+    public ReadingSessionResponse.BlockedApps updateBlockedApps(Long memberId, List<BlockedAppItem> blockedApps) {
         if (blockedApps == null) {
             blockedApps = List.of();
         }
@@ -129,15 +129,8 @@ public class ReadingSessionSettingsServiceImpl implements ReadingSessionSettings
         // 3. 새 차단 앱 목록 저장
 
         // Mock: 요청값 그대로 반환
-        List<ReadingSessionResponse.BlockedAppItem> responseItems = blockedApps.stream()
-                .map(app -> ReadingSessionResponse.BlockedAppItem.builder()
-                        .bundleId(app.getBundleId())
-                        .name(app.getName())
-                        .build())
-                .toList();
-
         return ReadingSessionResponse.BlockedApps.builder()
-                .blockedApps(responseItems)
+                .blockedApps(blockedApps)
                 .build();
     }
 }

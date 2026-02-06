@@ -40,7 +40,18 @@ public class ReadingInterval {
     }
 
     public void end(LocalDateTime endTime) {
-        this.endTime = endTime;
+        if (this.endTime != null) {
+            throw new IllegalStateException("이미 종료된 인터벌입니다.");
+        }
+        if (endTime.isBefore(this.startTime)) {
+            throw new IllegalArgumentException("종료 시간은 시작 시간 이후여야 합니다.");
+        }
         this.durationMinutes = (int) ChronoUnit.MINUTES.between(this.startTime, endTime);
+        this.endTime = endTime;
+    }
+
+    // 양방향 관계 설정용 (패키지 전용)
+    void setReadingSession(ReadingSession readingSession) {
+        this.readingSession = readingSession;
     }
 }
